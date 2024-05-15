@@ -1,0 +1,74 @@
+{% extends "accounts/base_auth.html"%}
+
+{% load static %}
+
+{% block content %}
+    <!DOCTYPE html>
+      <html>
+        <head>
+          <meta charset="utf-8">
+          <meta name="viewport" content="width=device-width, initial-scale=1.0">
+          <title>Регистрация</title>
+        </head>
+        <body>
+            <section id="auth-section">
+                {% if form.errors %}
+                <div id="danger-message">
+                    {% for field in form %}
+                    {% for error in field.errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                    <div class="alert alert-danger">
+                        <strong>{{ error|escape }}</strong>
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                <div class="container" id="auth">
+                    {{ e }}
+                    <h1 class="auth-h1">РЕГИСТРАЦИЯ</h1>
+                    <form class="auth-form" method="post" action="{% url 'reg' %}">
+                        {% csrf_token %}
+                          <div class="form-group row">
+                            <label for="inputName" class="col-sm-2 col-form-label">Логин</label>
+                            {{ form.username }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputLastName" class="col-sm-2 col-form-label">Фамилия</label>
+                            {{ form.last_name }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputFirstName" class="col-sm-2 col-form-label">Имя</label>
+                            {{ form.first_name }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputPatronymic" class="col-sm-2 col-form-label">Отчество</label>
+                            {{ form.patronymic }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputPhone" class="col-sm-2 col-form-label">Номер телефона</label>
+                            {{ form.phone_number }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputEmail" class="col-sm-2 col-form-label">Эл. почта</label>
+                            {{ form.email }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputPassword" class="col-sm-2 col-form-label">Пароль</label>
+                            {{ form.password1 }}
+                          </div>
+                          <div class="form-group row">
+                            <label for="inputRepeatPassword" class="col-sm-2 col-form-label">Повторите пароль</label>
+                            {{ form.password2 }}
+                          </div>
+                        <button class="btn btn-primary" type="submit">СОЗДАТЬ АККАУНТ</button>
+                    </form>
+                </div>
+            </section>
+        </body>
+      </html>
+{% endblock %}

@@ -1,0 +1,109 @@
+{% extends "accounts/base_auth.html" %}
+
+{% block content %}
+
+<div class="container">
+
+    <!-- Контейнер для обновления профиля -->
+        <h1>Личный кабинет</h1>
+        <div class="card mt-3">
+            <div class="card-body">
+                <h5 class="card-title">Информация о пользователе</h5>
+                <p class="card-text"><strong>Имя пользователя:</strong> {{ request.user.username }}</p>
+                <p class="card-text"><strong>Дата регистрации:</strong> {{ request.user.date_joined }}</p>
+                <p class="card-text"><strong>Статус аккаунта:</strong> {% if request.user.is_designer %}
+                                                                        Дизайнер
+                                                                    {% else %}
+                                                                        Клиент
+                                                                    {% endif %}
+                </p>
+            </div>
+        </div>
+
+    <!-- Контейнер с кнопками переключения -->
+    <div class="btn-group" role="group" aria-label="Basic example">
+        <button type="button" class="btn btn-primary" id="profile-btn">Профиль</button>
+        <button type="button" class="btn btn-primary" id="orders-history-btn">История заказов</button>
+        {% if request.user.is_designer %}
+        <button type="button" class="btn btn-primary" id="design_projects-btn">Проекты</button>
+        {% endif %}
+    </div>
+
+    <!-- Форма для обновления профиля -->
+    <div id="profile-container">
+        <form method="POST" >
+            {% csrf_token %}
+            <h1>Личные данные</h1>
+
+            <div class="form-group">
+                <label for="inputLastName">Фамилия</label>
+                <input type="name" class="form-control" id="inputLastName" name="lastname" value="{{ request.user.last_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputName">Имя</label>
+                <input type="name" class="form-control" id="inputName" name="name" value="{{ request.user.first_name }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputPatronymic">Отчество</label>
+                <input type="name" class="form-control" id="inputPatronymic" name="patronymic" value="{{ request.user.patronymic }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputPhone">Номер телефона</label>
+                <input type="phonenumber" class="form-control" id="inputPhone" name="phone" value="{{ request.user.phone_number }}" required>
+            </div>
+            <div class="form-group">
+                <label for="inputEmail">Электронная почта</label>
+                <input type="email" class="form-control" id="inputEmail" name="email" value="{{ request.user.email }}" required>
+            </div>
+            <button type="submit" class="btn btn-primary">Обновить профиль</button>
+        </form>
+    </div>
+
+    <!-- Контейнер для истории заказов -->
+    <div id="orders-history-container" style="display: none;">
+        <!-- Здесь должен быть ваш код для отображения истории заказов -->
+        <h1>История заказов</h1>
+        #Список заказов
+        
+        <!-- Дополните этот контейнер соответствующими данными о заказах -->
+    </div>
+
+
+    <div id="design-projects-container" style="display: none;">
+        <!-- Здесь должен быть ваш код для отображения истории заказов -->
+        <h1>Проекты</h1>
+        #Список активных рабочих заказов
+        <!-- Дополните этот контейнер соответствующими данными о заказах -->
+    </div>
+
+    <!-- Кнопка для выхода из аккаунта -->
+    <form method="POST" action="{% url 'logout' %}">
+        <br>
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger mt-3">Выйти из аккаунта</button>
+    </form>
+
+</div>
+
+<script>
+    // JavaScript для переключения между контейнерами
+    document.getElementById('profile-btn').addEventListener('click', function() {
+        document.getElementById('profile-container').style.display = 'block';
+        document.getElementById('orders-history-container').style.display = 'none';
+        document.getElementById('design-projects-container').style.display = 'none';
+    });
+
+    document.getElementById('orders-history-btn').addEventListener('click', function() {
+        document.getElementById('profile-container').style.display = 'none';
+        document.getElementById('orders-history-container').style.display = 'block';
+        document.getElementById('design-projects-container').style.display = 'none';
+    });
+
+    document.getElementById('design_projects-btn').addEventListener('click', function() {
+        document.getElementById('profile-container').style.display = 'none';
+        document.getElementById('orders-history-container').style.display = 'none';
+        document.getElementById('design-projects-container').style.display = 'block';
+    });
+</script>
+
+{% endblock %}
